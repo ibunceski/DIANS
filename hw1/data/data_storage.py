@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class DataStorage:
-    def __init__(self, storage_path="issuer_metadata.pkl"):
+    def __init__(self, storage_path="issuers_data.pkl"):
         self.storage_path = Path(storage_path)
         self.ensure_storage_exists()
 

@@ -32,9 +32,6 @@ class StockDataScraper:
         rows = soup.select("tbody > tr")
         if not rows:
             return []
-        res = []
-        for row in rows:
-            parts = row.text.strip().split("\n")
         return [{
             self.COLUMN_NAMES[i]: parts[i] if parts[i] else "/"
             for i in range(len(self.COLUMN_NAMES))
