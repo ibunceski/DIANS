@@ -52,8 +52,7 @@ class StockDataManager:
             print(f"No data collected for {issuer}")
 
     def process_all_issuers(self, max_workers=8):
-        issuers = IssuerFilter.get_all_issuers()[:30]
-        # issuers = ["MKPT", "ADIN", "ALK", "ALKB", "BIKF", "BGOR", "CEVI", "CKB", "GALE"]
+        issuers = IssuerFilter.get_all_issuers()
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
             executor.map(self.process_issuer, issuers)
