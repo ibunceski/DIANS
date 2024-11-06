@@ -32,10 +32,16 @@ class StockDataScraper:
         rows = soup.select("tbody > tr")
         if not rows:
             return []
-        return [{
-            self.COLUMN_NAMES[i]: parts[i] if parts[i] else "/"
-            for i in range(len(self.COLUMN_NAMES))
-        } for row in rows if (parts := row.text.strip().split("\n"))]
+
+        res = []
+        for row in rows:
+            parts = row.text.strip().split("\n")
+            if len(parts) >= 9:
+                row_data = {self.COLUMN_NAMES[i]: parts[i] if len(parts[i]) != 0 else "/"
+                            for i in range(len(self.COLUMN_NAMES))}
+                res.append(row_data)
+
+        return res
 
     def scrape_issuer_data(self, issuer, from_date=None):
         today = date.today()
@@ -71,7 +77,7 @@ class StockDataScraper:
                     input_field.send_keys(Keys.RETURN)
 
                 find_btn.click()
-                time.sleep(0.025)
+                time.sleep(0.04)
 
                 if new_data := self._scrape_table(browser):
                     results.extend(new_data)
