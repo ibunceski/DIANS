@@ -6,8 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 
-from hw1.data.data_storage import DataStorage
-from hw1.utils.webdriver import WebDriver
+from Domashna1.storage.data_storage import DataStorage
+from Domashna1.utils.webdriver import WebDriver
 
 
 class StockDataScraper:

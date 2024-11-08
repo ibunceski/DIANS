@@ -3,9 +3,9 @@ from datetime import date
 import pandas as pd
 from pathlib import Path
 import time
-from hw1.data.data_storage import DataStorage
-from hw1.filters.issuer_filter import IssuerFilter
-from hw1.filters.stock_data_scraper import StockDataScraper
+from Domashna1.storage.data_storage import DataStorage
+from Domashna1.filters.issuer_filter import IssuerFilter
+from Domashna1.filters.stock_data_scraper import StockDataScraper
 
 
 class StockDataManager:
