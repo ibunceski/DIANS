@@ -27,19 +27,24 @@ class StockDataScraper:
     def _parse_date(date_str):
         return datetime.strptime(date_str, "%m/%d/%Y").date()
 
-    def _scrape_table(self, browser):
+    def _scrape_table(self, browser, issuer):
         soup = BeautifulSoup(browser.page_source, "html.parser")
         rows = soup.select("tbody > tr")
         if not rows:
             return []
 
         res = []
+        first = True
         for row in rows:
             parts = row.text.strip().split("\n")
+            if parts[6] == '0' and first is False:
+                continue
             if len(parts) >= 9:
                 row_data = {self.COLUMN_NAMES[i]: parts[i] if len(parts[i]) != 0 else "/"
                             for i in range(len(self.COLUMN_NAMES))}
+                row_data["Issuer"] = issuer
                 res.append(row_data)
+            first = False
 
         return res
 
@@ -79,7 +84,7 @@ class StockDataScraper:
                 find_btn.click()
                 time.sleep(0.04)
 
-                if new_data := self._scrape_table(browser):
+                if new_data := self._scrape_table(browser, issuer):
                     results.extend(new_data)
                     print(f"Scraped {len(new_data)} rows for {issuer} "
                           f"from {self._format_date(current_date)} "
