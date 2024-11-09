@@ -23,7 +23,7 @@ class DataStorage:
         with open(self.storage_path, 'wb') as f:
             pickle.dump(data, f)
 
-    def update_issuer(self, issuer: str, last_date: str):
+    def update_issuer(self, issuer, last_date):
         data = self.load_data()
         data[issuer] = last_date
         self.save_data(data)
