@@ -50,10 +50,7 @@ class StockDataScraper:
 
     def scrape_issuer_data(self, issuer, from_date=None):
         today = date.today()
-        start_date = (
-            self._parse_date(from_date) if from_date
-            else today - timedelta(days=3650)  # ~10 years
-        )
+        start_date = from_date
 
         browser = WebDriver.setup()
         results = []
