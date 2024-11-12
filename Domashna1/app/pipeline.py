@@ -31,7 +31,6 @@ class Pipeline:
 
     def run_pipeline(self, max_workers=8):
         issuers = self.issuer_filter.get_all_issuers()
-
         with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
             results = executor.map(self.process_issuer, issuers)
 

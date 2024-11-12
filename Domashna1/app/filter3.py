@@ -13,12 +13,11 @@ class DataFetcher:
             return pd.DataFrame()
 
         data = self.scraper.scrape_issuer_data(issuer, last_date)
+        self.storage.update_issuer(issuer, today)
 
         if data:
             new_df = pd.DataFrame(data)
-            new_df['datetime_object'] = pd.to_datetime(new_df['Date'], format="%m/%d/%Y")
-            new_df['Date'] = new_df['datetime_object'].dt.strftime('%d.%m.%Y')
-            self.storage.update_issuer(issuer, today.strftime("%m/%d/%Y"))
+            new_df['datetime_object'] = pd.to_datetime(new_df['Date'], format="%d.%m.%Y")
 
             return new_df
         else:

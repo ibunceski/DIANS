@@ -1,4 +1,3 @@
-import pandas as pd
 from datetime import date, timedelta
 
 
@@ -11,6 +10,6 @@ class DataDateChecker:
         last_date = storage_data.get(issuer)
 
         if last_date:
-            return pd.to_datetime(last_date).date()
+            return last_date
         else:
             return date.today() - timedelta(days=3650)

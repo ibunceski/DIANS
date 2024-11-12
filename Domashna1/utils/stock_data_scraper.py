@@ -1,13 +1,8 @@
-from selenium.webdriver.support.wait import WebDriverWait
-from datetime import datetime, date, timedelta
+import requests
+from datetime import date, timedelta
 from bs4 import BeautifulSoup
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import time
 
 from Domashna1.storage.data_storage import DataStorage
-from Domashna1.utils.webdriver import WebDriver
 
 
 class StockDataScraper:
@@ -21,82 +16,57 @@ class StockDataScraper:
 
     @staticmethod
     def _format_date(d):
-        return d.strftime("%m/%d/%Y")
+        return d.strftime("%d.%m.%Y")
 
-    @staticmethod
-    def _parse_date(date_str):
-        return datetime.strptime(date_str, "%m/%d/%Y").date()
-
-    def _scrape_table(self, browser, issuer):
-        soup = BeautifulSoup(browser.page_source, "html.parser")
-        rows = soup.select("tbody > tr")
-        if not rows:
-            return []
-
+    def _scrape_table(self, soup, issuer):
         res = []
-        first = True
-        for row in rows:
-            parts = row.text.strip().split("\n")
-            if parts[6] == '0' and first is False:
-                continue
-            if len(parts) >= 9:
-                row_data = {self.COLUMN_NAMES[i]: parts[i] if len(parts[i]) != 0 else "/"
-                            for i in range(len(self.COLUMN_NAMES))}
-                row_data["Issuer"] = issuer
-                res.append(row_data)
-            first = False
+        table = soup.select_one('#resultsTable > tbody')
+        if table:
+            rows = table.find_all('tr')
+            for row in rows:
+                tmp = {}
+                br = False
+                first = True
+                for td, col in zip(row.find_all('td'), self.COLUMN_NAMES):
+
+                    if (not first) and col == 'Max' and td.text == "":
+                        br = True
+                        break
+
+                    first = False
+                    tmp[col] = td.text
+
+                if br:
+                    continue
+
+                tmp['Issuer'] = issuer
+
+                res.append(tmp)
 
         return res
 
-    def scrape_issuer_data(self, issuer, from_date=None):
-        today = date.today()
-        start_date = from_date
+    def scrape_issuer_data(self, issuer, start_date):
+        url = f"https://www.mse.mk/mk/stats/symbolhistory/{issuer}"
+        result = []
+        end_date = date.today()
 
-        browser = WebDriver.setup()
-        results = []
+        while end_date >= start_date:
+            current_date = max(start_date, end_date - timedelta(days=365))
 
-        try:
-            browser.get(f"https://www.mse.mk/en/stats/symbolhistory/{issuer}")
-            current_date = start_date
+            params = {
+                "FromDate": self._format_date(current_date),
+                "ToDate": self._format_date(end_date),
+            }
 
-            while current_date < today:
-                end_date = min(current_date + timedelta(days=364), today)
+            response = requests.get(url, params=params)
+            html = response.text
+            soup = BeautifulSoup(html, 'html.parser')
 
-                wait = WebDriverWait(browser, 10)
-                find_btn = wait.until(EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "li.container-end > input")))
-                from_input = wait.until(EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "input#FromDate")))
-                to_input = wait.until(EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, "input#ToDate")))
+            result.extend(self._scrape_table(soup, issuer))
 
-                for input_field, input_date in [
-                    (from_input, current_date),
-                    (to_input, end_date)
-                ]:
-                    input_field.clear()
-                    input_field.send_keys(self._format_date(input_date))
-                    input_field.send_keys(Keys.RETURN)
+            end_date = current_date - timedelta(days=1)
 
-                find_btn.click()
-                time.sleep(0.04)
+        print(f"Collected {len(result)} rows for {issuer}") if len(result) != 0 else print(
+            f"No data collected for {issuer}")
 
-                if new_data := self._scrape_table(browser, issuer):
-                    results.extend(new_data)
-                    print(f"Scraped {len(new_data)} rows for {issuer} "
-                          f"from {self._format_date(current_date)} "
-                          f"to {self._format_date(end_date)}")
-                else:
-                    print(f"No data found for {issuer} in date range "
-                          f"{self._format_date(current_date)} - "
-                          f"{self._format_date(end_date)}")
-
-                current_date = end_date + timedelta(days=1)
-
-        except Exception as e:
-            print(f"Error scraping {issuer}: {e}")
-
-        finally:
-            browser.quit()
-
-        return results
+        return result
