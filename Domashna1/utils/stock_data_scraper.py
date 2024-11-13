@@ -48,10 +48,11 @@ class StockDataScraper:
     def scrape_issuer_data(self, issuer, start_date):
         url = f"https://www.mse.mk/mk/stats/symbolhistory/{issuer}"
         result = []
-        end_date = date.today()
+        today = date.today()
 
-        while end_date >= start_date:
-            current_date = max(start_date, end_date - timedelta(days=365))
+        current_date = start_date
+        while current_date < today:
+            end_date = min(current_date + timedelta(days=364), today)
 
             params = {
                 "FromDate": self._format_date(current_date),
@@ -64,7 +65,7 @@ class StockDataScraper:
 
             result.extend(self._scrape_table(soup, issuer))
 
-            end_date = current_date - timedelta(days=1)
+            current_date = end_date + timedelta(days=1)
 
         print(f"Collected {len(result)} rows for {issuer}") if len(result) != 0 else print(
             f"No data collected for {issuer}")
