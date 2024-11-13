@@ -16,7 +16,6 @@ class DataStorage:
             with open(self.storage_path, 'rb') as f:
                 return pickle.load(f)
         except (pickle.UnpicklingError, EOFError):
-            print(f"Warning: Could not load data from {self.storage_path}. Creating new storage.")
             return {}
 
     def save_data(self, data):
