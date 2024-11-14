@@ -58,8 +58,12 @@ class StockDataScraper:
                 "FromDate": self._format_date(current_date),
                 "ToDate": self._format_date(end_date),
             }
+            try:
+                response = requests.get(url, params=params)
+            except Exception as e:
+                print("Connection error, mse.mk not respoding, return empty list")
+                return {}
 
-            response = requests.get(url, params=params)
             html = response.text
             soup = BeautifulSoup(html, 'html.parser')
 
