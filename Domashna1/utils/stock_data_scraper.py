@@ -60,8 +60,8 @@ class StockDataScraper:
             }
             try:
                 response = requests.get(url, params=params)
-            except Exception as e:
-                print("Connection error, mse.mk not respoding, return empty list")
+            except Exception:
+                print("Connection error, mse.mk not responding")
                 return {}
 
             html = response.text
