@@ -1,0 +1,172 @@
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    justify-items: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 70px;
+}
+
+.logo-container {
+    grid-column: 1 / span 2;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+}
+
+.box {
+    background-color: #4267B2;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 60%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    transform-origin: center;
+    animation: flipIn 0.6s ease-out;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-card h2 {
+    margin-bottom: 70px;
+}
+
+.modal-card p {
+    margin-bottom: 20px;
+    font-size: 22px;
+    text-align: center;
+    white-space: pre-line;
+}
+
+
+
+.modal-card button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.modal-card button:hover {
+    background-color: #0056b3;
+}
+
+@keyframes flipIn {
+    0% {
+        transform: rotateY(90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes flipOut {
+    0% {
+        transform: rotateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotateY(90deg);
+        opacity: 0;
+    }
+}
+
+.modal-card {
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform-origin: center;
+    animation: flipIn 0.6s ease-out;
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 800px;
+    height: 500px;
+    text-align: center;
+    z-index: 1001;
+}
+
+.close-button {
+    position: relative;
+    left: 45%;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+    text-align: center;
+}
+
+.close-button:hover {
+    color: #007bff;
+}
+.modal-card.exit {
+    animation: flipOut 0.6s ease-in;
+}
+
+@media (max-width: 990px) {
+    .modal-card {
+        background-color: white;
+        position: relative;
+        transform-origin: center;
+        animation: flipIn 0.6s ease-out;
+        padding: 40px;
+        border-radius: 8px;
+        width: 400px;
+        height: 500px;
+        text-align: center;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+    }
+
+    .modal-card p {
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .modal-card h2 {
+        margin-bottom: 30px;
+    }
+}
