@@ -28,13 +28,9 @@ class LSTMAnalyzer:
         self.tech_features = ['RSI', 'MACD', 'Price_to_MA5', 'Price_to_MA20']
 
         self.columns = [
-            'Date', 'Close', 'High', 'Low', 'Avg Price', '%chg.', 'Volume',
-            'Turnover in BEST in denars', 'Total turnover in denars', 'Issuer'
+            'Date', 'Issuer', 'Avg Price', 'Close', 'High', 'Low', '%chg.',
+            'Total turnover in denars', 'Turnover in BEST in denars', 'Volume'
         ]
-        # self.columns = [
-        #     'Issuer', 'Date', 'Avg Price', 'Close', 'High', 'Low', '%chg.',
-        #     'Total turnover in denars', 'Turnover in BEST in denars', 'Volume'
-        # ]
 
         self.numeric_cols = ['Close', 'High', 'Low', 'Avg Price', '%chg.',
                              'Turnover in BEST in denars', 'Total turnover in denars', 'Volume']
@@ -365,18 +361,13 @@ class LSTMAnalyzer:
 
         return self.data_for_plotting(data, days)
 
-    def perform_prediction_pltgraph(self, issuer, days=5):
-        model_params = self.model_storage.load_model("stock_model_good")
-        self.load_model(model_params[0], model_params[1], model_params[2], model_params[3],
-                        model_params[4]['enc_len'])
-        data = self.data_storage.get_by_issuer(issuer)
-        if len(data) < 100:
-            print(f"Insufficient data for {issuer}")
-            return
-
-        self.plot_next_days(data, days)
-
-
-# if __name__ == '__main__':
-#     pr = LSTMAnalyzer()
-#     pr.perform_prediction_pltgraph("ALK")
+    # def _perform_prediction_pltgraph(self, issuer, days=5):
+    #     model_params = self.model_storage.load_model("stock_model_good")
+    #     self.load_model(model_params[0], model_params[1], model_params[2], model_params[3],
+    #                     model_params[4]['enc_len'])
+    #     data = self.data_storage.get_by_issuer(issuer)
+    #     if len(data) < 100:
+    #         print(f"Insufficient data for {issuer}")
+    #         return
+    #
+    #     self.plot_next_days(data, days)

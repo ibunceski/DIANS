@@ -121,8 +121,8 @@ class TechnicalAnalyzer:
     def analyze_stock(self, issuer):
         db = self.storage.get_by_issuer(issuer)
         columns = [
-            'Date', 'Close', 'High', 'Low', 'Avg. Price', '%chg.', 'Volume',
-            'Turnover in BEST in denars', 'Total turnover in denars', 'Issuer'
+            'Date', 'Issuer', 'Avg. Price', 'Close', 'High', 'Low', '%chg.',
+            'Total turnover in denars', 'Turnover in BEST in denars', 'Volume'
         ]
         data = pd.DataFrame(db, columns=columns)
 
