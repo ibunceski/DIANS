@@ -1,0 +1,72 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.ContactForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+    padding: 0 10px;
+}
+
+.contact-form {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    width: 400px;
+    height: 505px;
+}
+
+.contact-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.contact-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.contact-input:focus {
+    border-color: #003366;
+    outline: none;
+}
+
+textarea.contact-input {
+    height: 100px;
+    resize: none;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #333;
+}
+
+.submit-btn:focus {
+    outline: none;
+}
