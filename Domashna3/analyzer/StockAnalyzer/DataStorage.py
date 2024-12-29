@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import psycopg2
 
@@ -22,15 +23,15 @@ class DataStorage:
                     cursor.execute("""
                         CREATE TABLE IF NOT EXISTS issuer_data (
                             date DATE,
+                            issuer TEXT,
+                            avg_price TEXT,
                             last_trade_price TEXT,
                             max_price TEXT,
                             min_price TEXT,
-                            avg_price TEXT,
                             percent_change TEXT,
-                            volume TEXT,
                             turnover_best TEXT,
                             total_turnover TEXT,
-                            issuer TEXT,
+                            volume TEXT,
                             PRIMARY KEY (date, issuer)
                         )
                     """)
@@ -78,18 +79,42 @@ class DataStorage:
             print(f"Error retrieving issuer date: {e}")
             return None
 
+    # def save_issuer_data(self, data_rows):
+    #     try:
+    #         with psycopg2.connect(self.db_url) as conn:
+    #             with conn.cursor() as cursor:
+    #                 cursor.executemany("""
+    #                     INSERT INTO issuer_data (
+    #                         date, issuer, avg_price, last_trade_price, max_price, min_price,
+    #                         percent_change, turnover_best, total_turnover, volume
+    #                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    #                     ON CONFLICT (date, issuer) DO NOTHING
+    #                 """, data_rows)
+    #                 conn.commit()
+    #     except psycopg2.Error as e:
+    #         print(f"Error saving issuer data: {e}")
     def save_issuer_data(self, data_rows):
         try:
+            formatted_rows = [
+                (
+                    datetime.strptime(row[0], "%d.%m.%Y").strftime("%Y-%m-%d"),
+                    *row[1:]
+                )
+                for row in data_rows
+            ]
+
             with psycopg2.connect(self.db_url) as conn:
                 with conn.cursor() as cursor:
                     cursor.executemany("""
                         INSERT INTO issuer_data (
-                            date, last_trade_price, max_price, min_price, avg_price,
-                            percent_change, volume, turnover_best, total_turnover, issuer
+                            date, issuer, avg_price, last_trade_price, max_price, min_price,
+                            percent_change, turnover_best, total_turnover, volume
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (date, issuer) DO NOTHING
-                    """, data_rows)
+                    """, formatted_rows)
                     conn.commit()
+        except ValueError as ve:
+            print(f"Date format error: {ve}")
         except psycopg2.Error as e:
             print(f"Error saving issuer data: {e}")
 

@@ -1,7 +1,7 @@
 import os
+from datetime import datetime
 
 import psycopg2
-from datetime import datetime
 
 
 class DataStorage:
@@ -23,15 +23,15 @@ class DataStorage:
                     cursor.execute("""
                         CREATE TABLE IF NOT EXISTS issuer_data (
                             date DATE,
+                            issuer TEXT,
+                            avg_price TEXT,
                             last_trade_price TEXT,
                             max_price TEXT,
                             min_price TEXT,
-                            avg_price TEXT,
                             percent_change TEXT,
-                            volume TEXT,
                             turnover_best TEXT,
                             total_turnover TEXT,
-                            issuer TEXT,
+                            volume TEXT,
                             PRIMARY KEY (date, issuer)
                         )
                     """)
@@ -79,50 +79,60 @@ class DataStorage:
             print(f"Error retrieving issuer date: {e}")
             return None
 
+    # def save_issuer_data(self, data_rows):
+    #     try:
+    #         with psycopg2.connect(self.db_url) as conn:
+    #             with conn.cursor() as cursor:
+    #                 cursor.executemany("""
+    #                     INSERT INTO issuer_data (
+    #                         date, issuer, avg_price, last_trade_price, max_price, min_price,
+    #                         percent_change, turnover_best, total_turnover, volume
+    #                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    #                     ON CONFLICT (date, issuer) DO NOTHING
+    #                 """, data_rows)
+    #                 conn.commit()
+    #     except psycopg2.Error as e:
+    #         print(f"Error saving issuer data: {e}")
     def save_issuer_data(self, data_rows):
         try:
-            parsed_data_rows = []
-            for row in data_rows:
-                date_str = row[0]
-                try:
-                    parsed_date = datetime.strptime(date_str, '%d.%m.%Y').strftime('%Y-%m-%d')
-                    parsed_row = (parsed_date,) + row[1:]
-                    parsed_data_rows.append(parsed_row)
-                except ValueError:
-                    print(f"Could not parse date: {date_str}")
-                    continue
+            formatted_rows = [
+                (
+                    datetime.strptime(row[0], "%d.%m.%Y").strftime("%Y-%m-%d"),
+                    *row[1:]
+                )
+                for row in data_rows
+            ]
 
             with psycopg2.connect(self.db_url) as conn:
                 with conn.cursor() as cursor:
                     cursor.executemany("""
                         INSERT INTO issuer_data (
-                            date, last_trade_price, max_price, min_price, avg_price,
-                            percent_change, volume, turnover_best, total_turnover, issuer
+                            date, issuer, avg_price, last_trade_price, max_price, min_price,
+                            percent_change, turnover_best, total_turnover, volume
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (date, issuer) DO NOTHING
-                    """, parsed_data_rows)
+                    """, formatted_rows)
                     conn.commit()
+        except ValueError as ve:
+            print(f"Date format error: {ve}")
         except psycopg2.Error as e:
             print(f"Error saving issuer data: {e}")
 
     def get_all_data(self):
-        """
-        Retrieve and print all data from the database for debugging purposes.
-        """
         try:
             with psycopg2.connect(self.db_url) as conn:
                 with conn.cursor() as cursor:
-                    cursor.execute("SELECT * FROM issuer_dates")
-                    print("Issuer Dates Table:")
-                    for row in cursor.fetchall():
-                        print(row)
+                    # cursor.execute("SELECT * FROM issuer_dates")
+                    # issuer_dates = cursor.fetchall()
 
+                    # Retrieve data from issuer_data table
                     cursor.execute("SELECT * FROM issuer_data")
-                    print("\nIssuer Data Table:")
-                    for row in cursor.fetchall():
-                        print(row)
+                    issuer_data = cursor.fetchall()
+
+                    return issuer_data
         except psycopg2.Error as e:
             print(f"Error retrieving data: {e}")
+            return None, None
 
     def count_issuer_data_rows(self):
         try:

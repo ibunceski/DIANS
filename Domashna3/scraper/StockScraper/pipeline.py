@@ -30,15 +30,15 @@ class Pipeline:
                 data_rows = [
                     (
                         row['Date'],
+                        row['Issuer'],
+                        row['Avg. Price'],
                         row['Last trade price'],
                         row['Max'],
                         row['Min'],
-                        row['Avg. Price'],
                         row['%chg.'],
-                        row['Volume'],
                         row['Turnover in BEST in denars'],
                         row['Total turnover in denars'],
-                        row['Issuer'],
+                        row['Volume'],
                     )
                     for _, row in result.iterrows()
                 ]
