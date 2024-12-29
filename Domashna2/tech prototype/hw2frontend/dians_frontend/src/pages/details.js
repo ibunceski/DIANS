@@ -14,28 +14,12 @@ const DetailsPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const checkAndPerformScraping = async () => {
-            const lastScrapedDate = localStorage.getItem('lastScrapedDate');
-            const today = new Date().toISOString().split('T')[0];
-
-            if (!lastScrapedDate || lastScrapedDate !== today) {
-                try {
-                    setLoading(true)
-                    await axios.get('http://localhost:8080/api/fill-data');
-                    localStorage.setItem('lastScrapedDate', today);
-                } catch (err) {
-                    console.error('Scraping error:', err);
-                }
-            }
-        };
-
         const fetchIssuerData = async () => {
             if (!issuer) {
                 setError('No issuer selected');
                 setLoading(false);
                 return;
             }
-
             try {
                 setLoading(true);
                 const response = await axios.get(`http://localhost:8080/api/issuer-data/${issuer}`);
@@ -50,7 +34,6 @@ const DetailsPage = () => {
         };
 
         const initializePage = async () => {
-            await checkAndPerformScraping();
             await fetchIssuerData();
         };
 
@@ -59,6 +42,15 @@ const DetailsPage = () => {
 
     const renderTable = () => {
         if (!issuerData) return null;
+
+        const sortedData = Object.values(issuerData).sort((a, b) => {
+            const dateA = new Date(a.date);
+            console.log(dateA)
+            const dateB = new Date(b.date);
+            return dateB - dateA;
+        });
+
+
         return (
             <div className='table-container'>
                 <table>
@@ -73,10 +65,22 @@ const DetailsPage = () => {
                     <th>Промет во БЕСТ во денари</th>
                     <th>Вкупен промет во денари</th>
                     </thead>
-                    <tbody>{Object.values(issuerData).map(row => {
-                        return <tr>{Object.values(row).slice(1).map(val => {
-                            return <td>{val}</td>
-                        })}</tr>
+                    <tbody>
+                    {Object.values(sortedData).map(row => {
+                        return <tr>
+                            {Object.values(row).slice(1).map((val, index) => {
+                                if (index === 0) {
+                                    const formattedDate = new Date(val).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    }).replace(/\//g, '.');
+                                    return <td>{formattedDate}</td>;
+                                } else {
+                                    return <td>{val}</td>;
+                                }
+                            })}
+                        </tr>
                     })}
                     </tbody>
                 </table>

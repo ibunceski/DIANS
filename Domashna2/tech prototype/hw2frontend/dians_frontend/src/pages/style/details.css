@@ -45,14 +45,15 @@ h2 {
 .analysis-box:first-child {
     margin-left: 10px;
 }
+
 .analysis-box:last-child {
     margin-right: 10px;
 }
 
 .table-container {
-    max-width: 900px; /* Set a maximum width */
-    max-height: 400px; /* Set a maximum height */
-    overflow: auto; /* Enable scrolling */
+    max-width: 1000px;
+    max-height: 400px;
+    overflow: auto;
     margin: 20px auto;
     border: 1px solid #ddd;
 }
@@ -74,6 +75,10 @@ th {
     background-color: #003366;
     color: white;
     font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 6px 10px;
 }
 
 tr:nth-child(even) {
@@ -86,6 +91,7 @@ tr:hover {
 
 td {
     background-color: #fff;
+    z-index: 1;
 }
 
 caption {
@@ -93,11 +99,11 @@ caption {
     margin-bottom: 10px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     th, td {
         padding: 6px 10px;
     }
+
     table {
         font-size: 14px;
     }

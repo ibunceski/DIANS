@@ -4,6 +4,7 @@ import Contact from "../pages/contact";
 import Header from '../static/header'
 import Footer from '../static/footer'
 import Details from "../pages/details";
+import LSTM from "../pages/lstm";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
@@ -18,6 +19,7 @@ function Router() {
                     <Route path="/about" element={<About/>} />
                     <Route path="/contact" element={<Contact/>} />
                     <Route path="/details" element={<Details/>} />
+                    <Route path="/lstm" element={<LSTM/>} />
                 </Routes>
             </BrowserRouter>
             <Footer />

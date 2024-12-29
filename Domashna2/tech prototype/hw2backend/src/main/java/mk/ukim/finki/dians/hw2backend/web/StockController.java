@@ -6,6 +6,7 @@ import mk.ukim.finki.dians.hw2backend.service.IssuerDataService;
 import mk.ukim.finki.dians.hw2backend.service.IssuerDatesService;
 import mk.ukim.finki.dians.hw2backend.service.PythonScriptService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class StockController {
     final IssuerDataService issuerDataService;
     final IssuerDatesService issuerDatesService;
     final PythonScriptService pythonScriptService;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     public StockController(IssuerDataService issuerDataService, IssuerDatesService issuerDatesService, PythonScriptService pythonScriptService) {
         this.issuerDataService = issuerDataService;
@@ -38,7 +40,6 @@ public class StockController {
 
     @GetMapping("/issuer-data/{issuer}")
     public List<IssuerData> getDataByIssuer(@PathVariable String issuer) throws InterruptedException {
-        Thread.sleep(1000); // for the loading animation to be shown on the front end
         return issuerDataService.getDataByIssuer(issuer);
     }
 
@@ -49,8 +50,9 @@ public class StockController {
     }
 
     @GetMapping("/fill-data")
-    public void checkData(){
-        pythonScriptService.executePythonScript();
+    public void checkData() {
+        String url = "http://localhost:8000/api/scrape";
+        restTemplate.getForObject(url, String.class);
     }
 }
 

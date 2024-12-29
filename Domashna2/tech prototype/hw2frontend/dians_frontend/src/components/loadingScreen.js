@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bars } from 'react-loader-spinner';
+import {Bars} from 'react-loader-spinner';
 import "./style/loadingScreen.css"
 
 const LoadingScreen = (props) => {
@@ -11,7 +11,10 @@ const LoadingScreen = (props) => {
                 height={100}
                 width={100}
             />
+            <br/>
+            <p className="message">Please wait while we are preparing the stock data</p>
         </div>
+
     )
 }
 
