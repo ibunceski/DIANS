@@ -1,0 +1,228 @@
+.technical-analysis {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.technical-analysis:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.title {
+    font-size: 28px;
+    color: #1a237e;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.timeframe-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.timeframe-button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 12px;
+    background: #f0f2f5;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.timeframe-button:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.timeframe-button.active {
+    background: #3f51b5;
+    color: white;
+    box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2);
+}
+
+.overall-signal {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.overall-signal:hover {
+    transform: scale(1.02);
+}
+
+.overall-signal h3 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.signal-value {
+    font-size: 32px;
+    font-weight: 700;
+    padding: 10px 30px;
+    border-radius: 12px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.tables-container {
+    display: grid;
+    gap: 25px;
+}
+
+.table-section {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.table-section:hover {
+    transform: translateY(-5px);
+}
+
+.table-section h3 {
+    padding: 20px;
+    margin: 0;
+    background: rgba(63, 81, 181, 0.05);
+    color: #1a237e;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.analysis-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analysis-table th,
+.analysis-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.analysis-table th {
+    background: rgba(63, 81, 181, 0.03);
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.analysis-table tr {
+    transition: all 0.2s ease;
+}
+
+.analysis-table tr:hover {
+    background: rgba(63, 81, 181, 0.03);
+}
+
+.title {
+    font-size: 28px;
+    color: #1a237e;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.signal {
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.signal.buy {
+    color: #00c853 !important;
+    background: rgba(0, 200, 83, 0.1) !important;
+}
+
+.signal.buy:hover {
+    background: rgba(0, 200, 83, 0.15) !important;
+    transform: translateX(2px) !important;
+}
+
+.signal.sell {
+    color: #ff1744 !important;
+    background: rgba(255, 23, 68, 0.1) !important;
+}
+
+.signal.sell:hover {
+    background: rgba(255, 23, 68, 0.15) !important;
+    transform: translateX(2px) !important;
+}
+
+.signal.hold {
+    color: #ff9100 !important;
+    background: rgba(255, 145, 0, 0.1) !important;
+}
+
+.signal.hold:hover {
+    background: rgba(255, 145, 0, 0.15) !important;
+    transform: translateX(2px) !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .technical-analysis {
+        padding: 20px;
+        margin: 10px;
+        border-radius: 16px;
+    }
+
+    .timeframe-buttons {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+
+    .timeframe-button {
+        width: 100%;
+    }
+
+    .analysis-table th,
+    .analysis-table td {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .signal-value {
+        font-size: 24px;
+        padding: 8px 20px;
+    }
+}

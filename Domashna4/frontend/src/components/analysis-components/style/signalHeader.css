@@ -1,0 +1,41 @@
+.signal-header {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease;
+}
+
+.signal-header:hover {
+    transform: scale(1.02);
+}
+
+.analysis-type {
+    font-size: 20px;
+    color: #1a237e;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.signal-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.signal-value {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.signal-info {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}

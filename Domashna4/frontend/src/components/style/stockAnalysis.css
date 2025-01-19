@@ -1,0 +1,40 @@
+.analysis-grid {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    width: 100%;
+    height: auto;
+}
+
+.analysis-box {
+    flex: 1;
+    margin: 0 10px;
+    background-color: #003366;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    border-radius: 5%;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analysis-box:first-child {
+    margin-left: 10px;
+}
+
+.analysis-box:last-child {
+    margin-right: 10px;
+}
+
+.analysis-box:hover {
+    transform: translateY(-5px);
+    color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.analysis-box:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
